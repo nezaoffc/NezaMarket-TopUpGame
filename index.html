@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neza Market - Top Up Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #533483);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo i {
+            color: #ffd700;
+            margin-right: 10px;
+        }
+
+        .welcome-text {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin: 20px 0;
+            position: relative;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .welcome-text span {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #e0e0e0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .warning {
+            background: rgba(255, 87, 34, 0.2);
+            border-left: 5px solid #ff5722;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #ffd700;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .game-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        .game-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .products-container {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 15px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-name {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #ffd700, #ffaa00);
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 0.8rem;
+        }
+
+        .payment-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .payment-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 25px;
+            width: 280px;
+            text-align: center;
+            transition: transform 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .payment-card:hover {
+            transform: scale(1.05);
+        }
+
+        .payment-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .payment-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .payment-details {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: #e0e0e0;
+        }
+
+        .qris-image {
+            max-width: 200px;
+            margin: 10px auto;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .qris-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .contact-info {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+        }
+
+        .contact-info a {
+            color: #ffd700;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #b0b0b0;
+        }
+
+        .highlight {
+            color: #ffd700;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .welcome-text {
+                font-size: 2rem;
+            }
+            
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .payment-options {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-gamepad"></i>
+                NEZA MARKET TOP UP GAME
+            </div>
+            <h1 class="welcome-text" id="welcome-text"></h1>
+            <p class="tagline">Tempat terpercaya untuk top up semua game favorit Anda dengan proses cepat dan aman!</p>
+        </header>
+
+        <div class="info-box warning">
+            <h3><i class="fas fa-exclamation-triangle"></i> PERINGATAN!</h3>
+            <p>Sebelum membeli silakan masuk saluran owner terlebih dahulu agar mengetahui perbaikan dan promo terbaru!</p>
+            <a href="https://whatsapp.com/channel/0029VbAaWheJZg42G67Yw033" class="btn" target="_blank">
+                <i class="fab fa-whatsapp"></i> Saluran Owner
+            </a>
+        </div>
+
+        <section class="games">
+            <h2 class="section-title">PILIH GAME FAVORIT ANDA</h2>
+            <p class="tagline" style="text-align: center;">ALL DIAMOND 100% LEGAL LAYANAN FAST DAN MASUK NYA CEPAT! 😍</p>
+            
+            <div class="games-grid" id="games-container">
+                <!-- Game akan diisi oleh JavaScript -->
+            </div>
+        </section>
+
+        <section class="products">
+            <div id="products-container">
+                <!-- Produk akan diisi oleh JavaScript ketika game dipilih -->
+            </div>
+        </section>
+
+        <section class="payment">
+            <h2 class="section-title">METODE PEMBAYARAN</h2>
+            <p class="tagline" style="text-align: center;">PILIHLAH PAYMENT YANG ANDA INGIN! 😉</p>
+            
+            <div class="payment-options">
+                <div class="payment-card">
+                    <div class="payment-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3 class="payment-name">DANA</h3>
+                    <p class="payment-details">085760854726<br>A/N: GRE* *******</p>
+                    <a href="https://wa.me/62857608547263?text=Halo%20saya%20ingin%20melakukan%20pembayaran%20via%20DANA" class="btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Konfirmasi Pembayaran
+                    </a>
+                </div>
+                
+                <div class="payment-card">
+                    <div class="payment-icon">
+                        <i class="fab fa-google-pay"></i>
+                    </div>
+                    <h3 class="payment-name">GOPAY</h3>
+                    <p class="payment-details">085789458403<br>A/N: Nezaaja ********</p>
+                    <a href="https://wa.me/62857608547263?text=Halo%20saya%20ingin%20melakukan%20pembayaran%20via%20GOPAY" class="btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Konfirmasi Pembayaran
+                    </a>
+                </div>
+                
+                <div class="payment-card">
+                    <div class="payment-icon">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <h3 class="payment-name">QRIS</h3>
+                    <p class="payment-details">Scan kode QRIS berikut</p>
+                    <div class="qris-image">
+                        <img src="https://iili.io/K1HGL0X.png" alt="QRIS Neza Market">
+                    </div>
+                    <a href="https://wa.me/62857608547263?text=Halo%20saya%20ingin%20melakukan%20pembayaran%20via%20QRIS" class="btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Konfirmasi Pembayaran
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="contact-info">
+            <h3>Informasi Penting</h3>
+            <p>Jika sudah melakukan pembayaran, silakan hubungi owner agar pesanan segera diproses. Jangan lupa kirim bukti transaksi!</p>
+            <p>Berikut nomor owner: <a href="https://wa.me/62857608547263" target="_blank">0857608547263</a></p>
+            
+            <a href="https://wa.me/62857608547263?text=Halo%20saya%20sudah%20melakukan%20pembayaran%20dan%20ingin%20mengirim%20bukti%20transaksi" class="btn" target="_blank">
+                <i class="fab fa-whatsapp"></i> Kirim Bukti Transaksi
+            </a>
+        </div>
+
+        <footer>
+            <p>Semua pembelian 100% aman dan terjamin. Web ini dibuat oleh Neza Market agar pembeli mudah saat ingin top up game favorit!</p>
+            <p>&copy; 2025-2026 Neza Market Top Up Game. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Animasi teks welcome
+        const welcomeText = "HALLO SELAMAT DATANG DINEZA MARKET";
+        const welcomeElement = document.getElementById('welcome-text');
+        
+        function animateText(text, element, delay = 100) {
+            element.innerHTML = '';
+            for (let i = 0; i < text.length; i++) {
+                const span = document.createElement('span');
+                span.textContent = text[i] === ' ' ? '\u00A0' : text[i];
+                span.style.animationDelay = `${i * delay}ms`;
+                element.appendChild(span);
+            }
+        }
+        
+        // Inisialisasi animasi teks
+        animateText(welcomeText, welcomeElement, 70);
+        
+        // Data game dan produk
+        const games = [
+            {
+                name: "FREE FIRE",
+                icon: "fas fa-fire",
+                products: [
+                    { name: "5 DIAMOND", price: "Rp1.500" },
+                    { name: "12 DIAMOND", price: "Rp2.500" },
+                    { name: "50 DIAMOND", price: "Rp7.000" },
+                    { name: "70 DIAMOND", price: "Rp10.000" },
+                    { name: "140 DIAMOND", price: "Rp18.000" },
+                    { name: "210 DIAMOND", price: "Rp27.000" },
+                    { name: "355 DIAMOND", price: "Rp44.000" },
+                    { name: "500 DIAMOND", price: "Rp62.000" },
+                    { name: "720 DIAMOND", price: "Rp87.000" },
+                    { name: "1000 DIAMOND", price: "Rp121.000" },
+                    { name: "1450 DIAMOND", price: "Rp174.000" },
+                    { name: "2180 DIAMOND", price: "Rp262.000" },
+                    { name: "MEMBERSHIP LEVEL UP PASH", price: "Rp15.400" },
+                    { name: "MEMBERSHIP MINGGUAN 50 DM", price: "Rp27.500" },
+                    { name: "BOYAAH PASS", price: "Rp40.500" },
+                    { name: "MEMBERSHIP BULANAN 60 DM", price: "Rp79.700" }
+                ]
+            },
+            {
+                name: "MOBILE LEGEND",
+                icon: "fas fa-crown",
+                products: [
+                    { name: "5 DM", price: "Rp2.000" },
+                    { name: "12 DM", price: "Rp4.000" },
+                    { name: "36 DM", price: "Rp10.500" },
+                    { name: "44 DM", price: "Rp12.500" },
+                    { name: "74 DM", price: "Rp20.400" },
+                    { name: "100 DM", price: "Rp27.500" },
+                    { name: "112 DM", price: "Rp31.500" },
+                    { name: "172 DM", price: "Rp45.500" },
+                    { name: "185 DM", price: "Rp49.400" },
+                    { name: "222 DM", price: "Rp58.500" },
+                    { name: "296 DM", price: "Rp77.900" },
+                    { name: "344 DM", price: "Rp79.300" },
+                    { name: "408 DM", price: "Rp106.000" },
+                    { name: "460 DM", price: "Rp130.000" },
+                    { name: "522 DM", price: "Rp134.000" },
+                    { name: "568 DM", price: "Rp144.000" },
+                    { name: "642 DM", price: "Rp172.600" },
+                    { name: "712 DM", price: "Rp182.000" },
+                    { name: "750 DM", price: "Rp199.777" },
+                    { name: "875 DM", price: "Rp219.000" },
+                    { name: "963 DM", price: "Rp245.000" },
+                    { name: "1050 DM", price: "Rp265.000" },
+                    { name: "1136 DM", price: "Rp285.666" },
+                    { name: "1138 DM", price: "Rp287.500" },
+                    { name: "1× weekly diamond pass 220 (80+20 hari)", price: "Rp28.700" },
+                    { name: "STARLIGHT MEMBERSHIP", price: "Rp80.000" },
+                    { name: "2× WDP 440 (80+20HARI)", price: "Rp56.888" },
+                    { name: "3× WDP 660 (80+20HARI)", price: "Rp84.000" },
+                    { name: "4× WDP 880 (80+20HARI)", price: "Rp112.000" },
+                    { name: "STARLIGHT MEMBER PLUS", price: "Rp194.000" }
+                ]
+            },
+            // Data game lainnya akan dimasukkan di sini (disederhanakan untuk contoh)
+            {
+                name: "PUBG MOBILE",
+                icon: "fas fa-crosshairs",
+                products: [
+                    { name: "15UC", price: "Rp8.200" },
+                    { name: "25UC", price: "Rp9.500" },
+                    { name: "60UC", price: "Rp15.300" },
+                    { name: "70UC", price: "Rp25.000" },
+                    { name: "100UC", price: "Rp29.444" },
+                    { name: "150UC", price: "Rp43.555" },
+                    { name: "200UC", price: "Rp57.000" },
+                    { name: "250UC", price: "Rp70.000" },
+                    { name: "300UC", price: "Rp73.000" },
+                    { name: "350UC", price: "Rp85.000" },
+                    { name: "360UC", price: "Rp89.000" },
+                    { name: "525UC", price: "Rp126.000" },
+                    { name: "750UC", price: "Rp168.000" },
+                    { name: "1000UC", price: "Rp229.000" },
+                    { name: "1100UC", price: "Rp40.000" }
+                ]
+            },
+            {
+                name: "VALORANT",
+                icon: "fas fa-bullseye",
+                products: [
+                    { name: "300 VALORANT POINT", price: "Rp42.500" },
+                    { name: "430 VALORANT POINT", price: "Rp47.000" },
+                    { name: "625 VALORANT POINT", price: "Rp75.000" },
+                    { name: "700 VALORANT POINT", price: "Rp76.000" },
+                    { name: "1125 VALORANT POINT", price: "Rp127.000" },
+                    { name: "1357 VALORANT POINT", price: "Rp137.777" },
+                    { name: "1650 VALORANT POINT", price: "Rp144.000" },
+                    { name: "1950 VALORANT POINT", price: "Rp173.000" },
+                    { name: "2400 VALORANT POINT", price: "Rp229.000" },
+                    { name: "2850 VALORANT POINT", price: "Rp275.000" }
+                ]
+            }
+            // Data game lainnya bisa ditambahkan di sini
+        ];
+
+        // Tambahkan game-game lainnya dengan cara yang sama
+        const additionalGames = [
+            "ARENA BREAKOUT", "BLOOD STRIKE", "ARENA OF VALOR", "CALL OF DUTY MOBILE",
+            "CHAOS CRISIS", "CLASH OF CLANS", "CLASH ROYALE", "DELTA FORCE", 
+            "EGGY PARTY", "FC MOBILE", "GRESHIN IMPACT", "HONOR OF KINGS", 
+            "LORD MOBILE", "MARVEL SUPERWAR", "ONE PUNCH MAN", "RAGNAROK", 
+            "SAUSAGE MAN", "SPEED DRIFTER", "STUMBLE GUYS", "SUPERSUS", 
+            "UNDAWN", "WOREWORF"
+        ];
+
+        additionalGames.forEach(gameName => {
+            games.push({
+                name: gameName,
+                icon: "fas fa-gamepad",
+                products: [
+                    { name: "Produk Standar", price: "Rp10.000" },
+                    { name: "Produk Premium", price: "Rp25.000" },
+                    { name: "Paket Lengkap", price: "Rp50.000" }
+                ]
+            });
+        });
+
+        // Render game
+        const gamesContainer = document.getElementById('games-container');
+        const productsContainer = document.getElementById('products-container');
+        
+        games.forEach(game => {
+            const gameCard = document.createElement('div');
+            gameCard.className = 'game-card';
+            gameCard.innerHTML = `
+                <div class="game-icon">
+                    <i class="${game.icon}"></i>
+                </div>
+                <div class="game-name">${game.name}</div>
+            `;
+            
+            gameCard.addEventListener('click', () => {
+                showProducts(game);
+            });
+            
+            gamesContainer.appendChild(gameCard);
+        });
+        
+        function showProducts(game) {
+            productsContainer.innerHTML = '';
+            productsContainer.style.display = 'block';
+            
+            const backButton = document.createElement('button');
+            backButton.className = 'btn back-btn';
+            backButton.innerHTML = '<i class="fas fa-arrow-left"></i> Kembali ke Daftar Game';
+            backButton.addEventListener('click', () => {
+                productsContainer.style.display = 'none';
+            });
+            productsContainer.appendChild(backButton);
+            
+            const title = document.createElement('h2');
+            title.className = 'section-title';
+            title.textContent = `PRODUK ${game.name}`;
+            productsContainer.appendChild(title);
+            
+            const productsGrid = document.createElement('div');
+            productsGrid.className = 'products-grid';
+            
+            game.products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-name">${product.name}</div>
+                    <div class="product-price">${product.price}</div>
+                    <a href="https://wa.me/62857608547263?text=Halo,%20saya%20ingin%20memesan%20${encodeURIComponent(product.name)}%20untuk%20${encodeURIComponent(game.name)}" class="btn btn-small" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Pesan Sekarang
+                    </a>
+                `;
+                productsGrid.appendChild(productCard);
+            });
+            
+            productsContainer.appendChild(productsGrid);
+            
+            // Scroll ke produk
+            productsContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Membuat partikel background
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 50;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Ukuran acak antara 5px dan 30px
+            const size = Math.random() * 25 + 5;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // Posisi awal acak
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            
+            // Warna dengan opacity acak
+            const opacity = Math.random() * 0.3 + 0.1;
+            particle.style.background = `rgba(255, 255, 255, ${opacity})`;
+            
+            // Durasi animasi acak antara 10s dan 30s
+            const duration = Math.random() * 20 + 10;
+            particle.style.animationDuration = `${duration}s`;
+            
+            // Delay animasi acak
+            const delay = Math.random() * 5;
+            particle.style.animationDelay = `${delay}s`;
+            
+            particlesContainer.appendChild(particle);
+        }
+    </script>
+</body>
+</html>
